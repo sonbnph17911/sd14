@@ -136,7 +136,7 @@ public class VoucherController extends BaseController {
         return discountCode.toString();
     }
 
-    @GetMapping("get-by-code/{code}")
+    @GetMapping("get-by-code123/{code}")
     public Response getByCode123(@PathVariable String code) {
         return Response.build().ok().data(this.voucherService.getByCode(code));
     }
