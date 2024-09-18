@@ -263,8 +263,23 @@ public class OrderController extends BaseController {
     }
 
     @PostMapping("change-status")
+    @Transactional
     public Response changeStatus(@RequestBody ChangeStatusDto changeStatusDto) {
         Order order = this.orderService.findById(changeStatusDto.getId()).orElse(null);
+        if(changeStatusDto.getStatus() == EOrderStatus.DELIVERING) {
+            List<OrderDetail> orderDetails = this.orderDetailService.findAllByOrderId(order.getId());
+            List<ProductDetail> productDetails = new ArrayList<>();
+            for (OrderDetail od: orderDetails) {
+                ProductDetail productDetail = od.getProductDetail();
+                if(productDetail.getQuantity() < od.getQuantity()) {
+                    return Response.build().code(Response.CODE_INTERNAL_ERROR).data("Số lượng sản phẩm không đủ.");
+                }
+                productDetail.setQuantity(productDetail.getQuantity() - od.getQuantity());
+                productDetails.add(productDetail);
+            }
+
+            this.productDetailService.saveAll(productDetails);
+        }
         order.setStatus(changeStatusDto.getStatus());
         if(changeStatusDto.getStatus() == EOrderStatus.CANCELLED) {
             User user = this.userService.getById(this.getTheCurrentlyLoggedInUserId());

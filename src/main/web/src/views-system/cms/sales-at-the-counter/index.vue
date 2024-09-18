@@ -787,6 +787,24 @@ export default {
         return
       }
 
+      if(!this.listOrder[i].moneyPaid) {
+        this.$message({
+          showClose: true,
+          message: 'Vui lòng nhập đủ số tiền khách trả',
+          type: 'error'
+        })
+        return
+      }
+
+      if(this.listOrder[i].moneyPaid < this.listOrder[i].totalAmountNet) {
+        this.$message({
+          showClose: true,
+          message: 'Số tiền khách trả chưa đủ',
+          type: 'error'
+        })
+        return
+      }
+
       this.$confirm('Xác nhận thanh toán?', 'Xác nhận', {
         confirmButtonText: 'Xác nhận',
         cancelButtonText: 'Hủy',
