@@ -1,0 +1,28 @@
+package com.shop.dto;
+
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter
+@Setter
+public class VNPayDto {
+	private int id;
+	private int money;
+	private String bankCode;
+	private String billMobile;
+	private String billEmail;
+	private String fullname;
+	// Billing
+	private String billAddress;
+	private String billCity;
+	private String billCountry;
+	private String billState;
+	// Invoice
+    private String invPhone;
+    private String invEmail;
+    private String invCustomer;
+    private String invAddress;
+    private String invCompany;
+    private String invTaxcode;
+    private String invType;
+}
